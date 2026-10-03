@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scaling stories — journey from EC2 to Kubernetes · weastel</title>
+<meta name="description" content="A startup scaling parable — vertical EC2, load balancers, Docker, Jenkins, microservices, and Kubernetes on AWS.">
+<link rel="canonical" href="https://weastel.github.io/blog/scaling-ec2-to-kubernetes/">
+<meta property="og:title" content="Scaling stories — journey from EC2 to Kubernetes">
+<meta property="og:description" content="A startup scaling parable — vertical EC2, load balancers, Docker, Jenkins, microservices, and Kubernetes on AWS.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://weastel.github.io/blog/scaling-ec2-to-kubernetes/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+
+</head>
+<body class="site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar" data-header>
+  <div class="shell topbar__inner">
+    <a class="topbar__brand" href="/">weastel</a>
+    <nav class="topbar__nav" aria-label="Primary">
+      
+        <a class="topbar__link"
+           href="/"
+           >
+          Home
+        </a>
+      
+        <a class="topbar__link"
+           href="/blog/"
+           >
+          Blog
+        </a>
+      
+        <a class="topbar__link"
+           href="/work/"
+           >
+          Work
+        </a>
+      
+        <a class="topbar__link topbar__link--cta"
+           href="/Drumil_resume.pdf"
+           download>
+          Resume
+        </a>
+      
+    </nav>
+  </div>
+</header>
+<div class="ambient" aria-hidden="true"></div>
+
+  <main class="main" id="main">
+    
+<article class="page-shell page-shell--blog post reveal" data-reveal>
+  <header class="post-header">
+    <p class="eyebrow"><a href="/blog/">Writing</a> / scaling-ec2-to-kubernetes</p>
+    <h1>Scaling stories — journey from EC2 to Kubernetes</h1>
+    <div class="post-meta">
+      <time datetime="2023-01-04">Jan 4, 2023</time>
+      
+      <ul class="chip-list">
+        
+        <li>kubernetes</li>
+        
+        <li>docker</li>
+        
+        <li>aws</li>
+        
+        <li>devops</li>
+        
+        <li>scaling</li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="prose prose-wide">
+    <p><em>Originally part of Newton School’s DevOps series on Medium.</em></p>
+<p>After becoming champion of the Alola Region, Ash Ketchum had an idea: teach the basics of Pokémon training so every trainer could chase their dream of becoming Champion. With Brock Harrison, he founded <strong>Oak School</strong> — an ed-tech platform for Pokémon fundamentals.</p>
+<p>Ash and Brock brought on <strong>Misty Williams</strong> as tech founder.</p>
+<p>Misty and her sister <strong>Daisy</strong> built a <strong>monolithic</strong> app — backend and frontend in one codebase. Monolith first made sense: ship fast, lots of features, endless todos. They iterated quickly. Then it was time to launch in the Alola region and show Oak School to the world.</p>
+<h2>Two EC2 boxes and an RDS</h2>
+<p>Misty spun up <strong>two EC2 instances</strong> and an <strong>RDS</strong> database, deploying backend and frontend <strong>manually</strong>. She registered <strong><code>oakschool.co</code></strong> for the UI and <strong><code>api.oakschool.co</code></strong> for the API, each pointed at its instance.</p>
+<p><em>(Architecture diagrams were in the <a href="https://medium.com/newton-school/scaling-stories-of-tech-startups-journey-from-ec2-to-kubernetes-cluster-85c92f755101">original Medium post</a>.)</em></p>
+<h2>Viral growth and vertical scaling</h2>
+<p>Oak School went viral within <strong>three months</strong>. Daily active users went from <strong>10 → 1,000</strong>; <strong>100 instructors</strong> ran courses. The site slowed down — students and instructors complained.</p>
+<p>Misty <strong>scaled the backend vertically</strong>: <strong>8 GiB → 32 GiB RAM</strong>, <strong>4 → 16 vCPUs</strong>. That held until traffic climbed toward <strong>5,000</strong> users.</p>
+<h2>Horizontal scaling and the load balancer</h2>
+<p>Research pointed to <strong>horizontal scale</strong>: multiple API instances behind a load balancer, same code, <strong>shared database</strong>. Add capacity by adding instances; <strong>Amazon’s load balancer</strong> spreads traffic so no single box carries everything.</p>
+<p>That fixed elasticity — but you can’t <strong>SSH and deploy by hand</strong> across a fleet and expect consistency.</p>
+<h2>Docker and “works on my machine”</h2>
+<p><strong>Containers</strong> package code with dependencies. <strong>Docker</strong> gave the same artifact on every instance and killed the classic “works on my machine” gap.</p>
+<p>Deploy pain remained: pushing images to <em>N</em> machines still hurt.</p>
+<h2>Jenkins and continuous delivery</h2>
+<p><strong>Jenkins</strong> automated build and deploy: build a Docker image, roll it to the right EC2 hosts. A <strong>continuous delivery (CD) pipeline</strong> tied scaling to repeatable releases.</p>
+<p><em>(Pipeline diagram in the original post.)</em></p>
+<p><strong>Team update:</strong> <strong>2 → 30</strong> people — frontend, backend, ML, data science, DevOps, and more.</p>
+<h2>Microservices at the edges</h2>
+<p>Roadmap items — virtual Pokémon battles, combat analysis, and similar — couldn’t all live in one monolith. Some workloads needed <strong>GPUs</strong> for simulation; cost and ownership differed by feature. Misty <strong>kept the monolith</strong> but added <strong>helper microservices</strong> the core could call for specialized work.</p>
+<p>More services on more machines meant someone had to keep desired state honest when networks or instances failed.</p>
+<h2>Kubernetes</h2>
+<p><strong>Kubernetes</strong> — Google’s orchestrator — took a <strong>declarative desired state</strong> (deployments as code) and reconciled reality: scale up or down, replace failed pods, smooth rollouts. It addressed <strong>deployment, scaling, and day-two ops</strong> in one place.</p>
+<p><strong>TL;DR:</strong> Everyone sleeps peacefully — Misty included, with her Togepi.</p>
+<hr>
+<p>That was the overview for our DevOps series. Follow-on posts dug into Kubernetes internals and running cloud-native apps in production.</p>
+<hr>
+<p><em>Originally published on <a href="https://medium.com/newton-school/scaling-stories-of-tech-startups-journey-from-ec2-to-kubernetes-cluster-85c92f755101">Medium — Newton School</a> (Jan 4, 2023).</em></p>
+
+  </div>
+  <p class="post-back"><a class="text-link" href="/blog/">← All posts</a></p>
+</article>
+
+  </main>
+  <footer class="foot">
+  <div class="shell foot__grid">
+    <div class="foot__brand">
+      <p class="foot__name">Drumil Patel</p>
+      <p class="foot__tag">Accidental query engine engineer · Bangalore</p>
+    </div>
+    <div class="foot__links">
+      
+      <a href="https://github.com/weastel" rel="noopener noreferrer" target="_blank">GitHub</a>
+      
+      
+      <a href="https://www.linkedin.com/in/drumil-patel-weastel/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      
+      
+      <a href="mailto:drumilpatel720@gmail.com">Email</a>
+      
+      <a href="/Drumil_resume.pdf">Resume</a>
+    </div>
+    <p class="foot__fine">© Drumil Patel</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+# Drop static files here (resume PDF, favicon, images).
+# Everything in `public/` is copied to the site root in `dist/`.

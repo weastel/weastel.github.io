@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karpenter: Midas Touch for K8s Cluster · weastel</title>
+<meta name="description" content="How Newton School cut EC2 costs ~60% (~$160k/year) by migrating from Cluster Autoscaler to Karpenter on EKS.">
+<link rel="canonical" href="https://weastel.github.io/blog/karpenter-midas-touch/">
+<meta property="og:title" content="Karpenter: Midas Touch for K8s Cluster">
+<meta property="og:description" content="How Newton School cut EC2 costs ~60% (~$160k/year) by migrating from Cluster Autoscaler to Karpenter on EKS.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://weastel.github.io/blog/karpenter-midas-touch/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+
+</head>
+<body class="site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar" data-header>
+  <div class="shell topbar__inner">
+    <a class="topbar__brand" href="/">weastel</a>
+    <nav class="topbar__nav" aria-label="Primary">
+      
+        <a class="topbar__link"
+           href="/"
+           >
+          Home
+        </a>
+      
+        <a class="topbar__link"
+           href="/blog/"
+           >
+          Blog
+        </a>
+      
+        <a class="topbar__link"
+           href="/work/"
+           >
+          Work
+        </a>
+      
+        <a class="topbar__link topbar__link--cta"
+           href="/Drumil_resume.pdf"
+           download>
+          Resume
+        </a>
+      
+    </nav>
+  </div>
+</header>
+<div class="ambient" aria-hidden="true"></div>
+
+  <main class="main" id="main">
+    
+<article class="page-shell page-shell--blog post reveal" data-reveal>
+  <header class="post-header">
+    <p class="eyebrow"><a href="/blog/">Writing</a> / karpenter-midas-touch</p>
+    <h1>Karpenter: Midas Touch for K8s Cluster</h1>
+    <div class="post-meta">
+      <time datetime="2024-03-13">Mar 13, 2024</time>
+      
+      <ul class="chip-list">
+        
+        <li>karpenter</li>
+        
+        <li>kubernetes</li>
+        
+        <li>eks</li>
+        
+        <li>aws</li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="prose prose-wide">
+    <blockquote>
+<p>The gold you earn may shine, but the gold you save will endure — WarrenGPT</p>
+</blockquote>
+<p>Recently, we cut our EC2 costs by <strong>60%</strong> (saving around <strong>$160k annually</strong>) by upgrading our K8s node provisioner from Cluster Autoscaler (CAS) to <a href="https://karpenter.sh/">Karpenter</a>. This post walks through that move — what we changed, how Karpenter behaves under the hood, and what we measured after migration.</p>
+<h2>Architecture overview</h2>
+<p>At Newton School, we run production workloads on <strong>Amazon EKS</strong>. That cluster backs backend services, analytics and data tooling (Airbyte, Airflow, Metabase), learning infrastructure (on-prem GitLab, Judge Hero, evaluation services), and <strong>GPU-heavy AI/ML</strong> workloads. In practice that meant <strong>200+ services</strong>, <strong>500+ pods</strong>, and on the order of <strong>20k users</strong> — a mix of <strong>spot and on-demand</strong> nodes, stateful pieces (Gitaly, databases, caches, queues) and stateless APIs and workers.</p>
+<p>We originally used <strong>Cluster Autoscaler</strong>: node groups plus taints/tolerations to place unscheduled pods. We migrated to <strong>Karpenter</strong> as a more economical provisioner and saw roughly <strong>60% lower</strong> overall cost. The sections below explain how Karpenter works and how we moved without drama.</p>
+<h2>Karpenter under the hood</h2>
+<p>Karpenter combines <strong>offline and online bin-packing</strong> when choosing nodes. Cluster Autoscaler uses a lighter <strong>online</strong> pack driven mainly by unscheduled pod CPU/memory, bounded by fixed <strong>node groups</strong> — a smaller menu of instance types.</p>
+<p>Bin-packing with cloud constraints is NP-hard, so both tools use approximations. <strong>Online</strong> packing reacts to new pending pods; <strong>offline</strong> packing reshapes the fleet by adding or removing nodes to improve utilization.</p>
+<p>AWS built Karpenter with <strong>price-aware</strong> packing: native online <em>and</em> offline optimization with cost as a first-class signal. For a deeper walkthrough, see <a href="https://www.youtube.com/watch?v=lkg_9ETHeks">AWS re:Invent — Harness the power of Karpenter</a>.</p>
+<h2>Migration strategy</h2>
+<ol>
+<li>
+<p><strong>Bootstrap off the cluster</strong> — We ran Karpenter on <strong>EKS Fargate</strong> so Karpenter itself wasn’t scheduled on nodes it manages, with IAM/network permissions to add/remove nodes and update policies.</p>
+</li>
+<li>
+<p><strong>Node pools</strong> — Separate pools for spot vs on-demand, plus GPU pools for ML. For single-replica StatefulSets we disabled aggressive de-provisioning to avoid downtime from offline consolidation.</p>
+</li>
+<li>
+<p><strong>Cutover</strong> — We moved active nodes under Karpenter control with custom policies on existing nodes so the fleet transferred <strong>without cluster downtime</strong>.</p>
+</li>
+</ol>
+<p>Official guide: <a href="https://karpenter.sh/docs/getting-started/migrating-from-cas/">Migrating from Cluster Autoscaler</a>.</p>
+<h2>Interesting insights</h2>
+<h3>Offline bin packing</h3>
+<p>Without cost-aware <strong>offline</strong> packing, CAS kept our spot fleet on <strong><code>m5ad.2xlarge</code></strong> when <strong><code>m5.2xlarge</code></strong> would have fit — a <strong>&gt;60%</strong> spot premium for the same shape of work, driven by node-group rigidity rather than actual pod needs.</p>
+<p>Example spot pricing (via <a href="https://www.vantage.sh/">vantage.sh</a> at the time of writing):</p>
+<pre><code>m5ad.2xlarge spot ≈ $0.2655 / hour
+m5.2xlarge spot   ≈ $0.1427 / hour
+</code></pre>
+<h3>CPU vs memory assumptions</h3>
+<p>We started memory-heavy (classic backend/auxiliary services). As products, data, and ML grew, the fleet became more <strong>CPU-weighted</strong>, but CAS still scaled <strong>memory-oriented node groups</strong> (<code>m4.2xlarge</code>, <code>m6.2xlarge</code>, etc.). Karpenter’s offline packing let the cluster shift toward <strong>CPU-efficient</strong> instance choices without us maintaining a perfect node-group matrix.</p>
+<h3>More scale, more optimization</h3>
+<p>Spot pricing rises on popular sizes; <strong>larger, less contended</strong> instances often have better <strong>$/core</strong> and <strong>$/GB</strong>. Karpenter isn’t locked to predefined group SKUs, so it can chase better ratios — including big spot nodes when the bin pack says so.</p>
+<p>Illustrative math from the original post:</p>
+<pre><code>m6a.2xlarge  (8 vCPU, 32 GiB)  spot ≈ $0.1792 / hour
+m6a.32xlarge (128 vCPU, 512 GiB) spot ≈ $1.0732 / hour
+
+16 × m6a.2xlarge ≈ 16 × $0.1792 = $2.8672 / hour
+1 × m6a.32xlarge ≈ $1.0732 / hour
+
+→ ~⅔ savings for equivalent capacity (when the pack fits)
+</code></pre>
+<p>During <strong>CodeRush</strong> — a large coding event with <strong>20–30k concurrent users</strong> over ~3 hours — Karpenter scaled the fleet for the spike. We saw on the order of <strong>~80% lower</strong> hourly cost vs the CAS era for that pattern: roughly <strong>$25–30/hour</strong> average under CAS vs <strong>~$5.5/hour</strong> with Karpenter (charts were in the <a href="https://medium.com/@weastel/karpenter-midas-touch-for-k8s-cluster-4635cc47980e">original Medium post</a>).</p>
+<h2>Conclusion</h2>
+<p>Moving from Cluster Autoscaler to Karpenter was a step-change in how we run EKS: cheaper, more flexible node selection, and better behavior at scale. Thanks to the AWS Karpenter team and everyone who made it production-ready in the open.</p>
+<h2>References</h2>
+<ol>
+<li><a href="https://karpenter.sh/">Karpenter</a></li>
+<li><a href="https://www.youtube.com/watch?v=lkg_9ETHeks">AWS re:Invent 2023 — Harness the power of Karpenter</a></li>
+<li><a href="https://grafana.com/blog/2023/11/09/how-grafana-labs-switched-to-karpenter-to-reduce-costs-and-complexities-in-amazon-eks/">How Grafana Labs switched to Karpenter (Grafana blog)</a></li>
+<li><a href="https://www.thestack.technology/aws-anthropic-cloud-bill-eks-karpenter/">Anthropic and Karpenter (The Stack)</a></li>
+</ol>
+<hr>
+<p><em>Originally published on <a href="https://medium.com/@weastel/karpenter-midas-touch-for-k8s-cluster-4635cc47980e">Medium</a> (Mar 13, 2024).</em></p>
+
+  </div>
+  <p class="post-back"><a class="text-link" href="/blog/">← All posts</a></p>
+</article>
+
+  </main>
+  <footer class="foot">
+  <div class="shell foot__grid">
+    <div class="foot__brand">
+      <p class="foot__name">Drumil Patel</p>
+      <p class="foot__tag">Accidental query engine engineer · Bangalore</p>
+    </div>
+    <div class="foot__links">
+      
+      <a href="https://github.com/weastel" rel="noopener noreferrer" target="_blank">GitHub</a>
+      
+      
+      <a href="https://www.linkedin.com/in/drumil-patel-weastel/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      
+      
+      <a href="mailto:drumilpatel720@gmail.com">Email</a>
+      
+      <a href="/Drumil_resume.pdf">Resume</a>
+    </div>
+    <p class="foot__fine">© Drumil Patel</p>
+  </div>
+</footer>
+
+</body>
+</html>

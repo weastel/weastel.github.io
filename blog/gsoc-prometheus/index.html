@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GSoC 2020, Prometheus (CNCF) · weastel</title>
+<meta name="description" content="EKS support for Prombench and Funcbench — making Prometheus test infra work beyond GKE.">
+<link rel="canonical" href="https://weastel.github.io/blog/gsoc-prometheus/">
+<meta property="og:title" content="GSoC 2020, Prometheus (CNCF)">
+<meta property="og:description" content="EKS support for Prombench and Funcbench — making Prometheus test infra work beyond GKE.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://weastel.github.io/blog/gsoc-prometheus/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/site.js" defer></script>
+
+</head>
+<body class="site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar" data-header>
+  <div class="shell topbar__inner">
+    <a class="topbar__brand" href="/">weastel</a>
+    <nav class="topbar__nav" aria-label="Primary">
+      
+        <a class="topbar__link"
+           href="/"
+           >
+          Home
+        </a>
+      
+        <a class="topbar__link"
+           href="/blog/"
+           >
+          Blog
+        </a>
+      
+        <a class="topbar__link"
+           href="/work/"
+           >
+          Work
+        </a>
+      
+        <a class="topbar__link topbar__link--cta"
+           href="/Drumil_resume.pdf"
+           download>
+          Resume
+        </a>
+      
+    </nav>
+  </div>
+</header>
+<div class="ambient" aria-hidden="true"></div>
+
+  <main class="main" id="main">
+    
+<article class="page-shell page-shell--blog post reveal" data-reveal>
+  <header class="post-header">
+    <p class="eyebrow"><a href="/blog/">Writing</a> / gsoc-prometheus</p>
+    <h1>GSoC 2020, Prometheus (CNCF)</h1>
+    <div class="post-meta">
+      <time datetime="2020-08-29">Aug 29, 2020</time>
+      
+      <ul class="chip-list">
+        
+        <li>prometheus</li>
+        
+        <li>gsoc</li>
+        
+        <li>kubernetes</li>
+        
+        <li>cncf</li>
+        
+      </ul>
+      
+    </div>
+  </header>
+  <div class="prose prose-wide">
+    <p>This post summarizes the work I did in <a href="https://prometheus.io/">Prometheus</a> (Cloud Native Computing Foundation) as part of <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2020</a>.</p>
+<p>I'm thankful to <strong>Hrishikesh Barman</strong> (mentor) for being extremely helpful and supportive throughout the period.</p>
+<p>During GSoC I worked on supporting <strong>Amazon EKS</strong> for <strong>Prombench</strong> and <strong>Funcbench</strong> — the benchmarking stack Prometheus uses to stress-test scrapers, readers, and the data path at scale. Prombench wasn't glamorous (thousands of pods, scrapers, readers), but it was <strong>honest</strong>: you learn quickly that observability is a database problem wearing a monitoring costume.</p>
+<hr>
+<h2>prometheus/test-infra</h2>
+<h3>Added support for EKS</h3>
+<p>This was one of my main tasks for the GSoC period. I worked with the EKS SDK to add CLI-based commands for cluster operations: create cluster, create node groups, apply resources, and related workflows.</p>
+<h3>Make test infra more generic</h3>
+<p>Initially test infra supported only GKE, so commands and docs were GKE-specific. As we added EKS, I refactored commands and documentation so new providers could plug in without copying GKE assumptions everywhere.</p>
+<h3>Programmatic subnets for EKS</h3>
+<p>Unlike GKE, EKS requires a VPC before you create a cluster, and that VPC is tightly coupled to the cluster name. For Prombench — where we mostly spin up nodes for a given test — that model works. For <strong>Funcbench</strong>, where we create a <strong>new cluster for every test run</strong>, it breaks down. I added support for <strong>programmatic subnets</strong> so Funcbench could keep creating fresh clusters without VPC collisions.</p>
+<h3>Grafana dashboard</h3>
+<p>I planned to update the Grafana dashboard during GSoC but didn't finish. I did update the Prometheus meta dashboard version; the full dashboard work was left for after the EKS and infra changes landed.</p>
+<hr>
+<h2>prometheus/prometheus</h2>
+<h3>GitHub workflow updates</h3>
+<p>Changes in test-infra (making it provider-generic) required updates to Prombench and Funcbench workflow files in the main Prometheus repo so CI could use the new commands and paths.</p>
+<hr>
+<h2>Future work</h2>
+<p>Several items from my proposal didn't fit in the GSoC window. I planned to continue once the EKS and generic infra work was merged — including the Grafana dashboard work above.</p>
+<hr>
+<p><em>Originally published on <a href="https://medium.com/@weastel/gsoc-2020-prometheus-cncf-cc38ecfc9482">Medium</a> (Aug 29, 2020).</em></p>
+
+  </div>
+  <p class="post-back"><a class="text-link" href="/blog/">← All posts</a></p>
+</article>
+
+  </main>
+  <footer class="foot">
+  <div class="shell foot__grid">
+    <div class="foot__brand">
+      <p class="foot__name">Drumil Patel</p>
+      <p class="foot__tag">Accidental query engine engineer · Bangalore</p>
+    </div>
+    <div class="foot__links">
+      
+      <a href="https://github.com/weastel" rel="noopener noreferrer" target="_blank">GitHub</a>
+      
+      
+      <a href="https://www.linkedin.com/in/drumil-patel-weastel/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      
+      
+      <a href="mailto:drumilpatel720@gmail.com">Email</a>
+      
+      <a href="/Drumil_resume.pdf">Resume</a>
+    </div>
+    <p class="foot__fine">© Drumil Patel</p>
+  </div>
+</footer>
+
+</body>
+</html>
