@@ -100,7 +100,9 @@
     </div>
   </header>
 
-  <section class="section">
+  
+
+<section class="section">
   <div class="section-head">
     <h2>Experience</h2>
   </div>
@@ -120,25 +122,92 @@
           </div>
         </header>
         
-        <p class="timeline-summary">Owned the architecture for DevRev&#39;s native observability warehouse (MELTS — Metrics, Events, Logs, Traces &amp; Sessions), powering observability for enterprise customers including Indian banks (HDFC, ICICI, Axis Bank, Bajaj, and others), as well as internal use cases spanning agent evaluation, commerce, and incident management.</p>
+        <p class="timeline-summary">Owned the architecture for DevRev&#39;s native observability warehouse (MELTS — Metrics, Events, Logs, Traces &amp; Sessions), powering observability for enterprise customers including Indian banks (HDFC, ICICI, Axis Bank, Bajaj, and others).</p>
         
-        <ul class="timeline-bullets">
+        
+        <div class="timeline-sections">
           
-          <li>Query engine: designed and built a distributed SQL query engine using Apache DataFusion and Ballista, integrating Tantivy for full-text search, Bloom filter indexes for trace search, and Parquet columnar storage on S3 for highly parallel, low-latency queries at PB scale.</li>
+          <div class="timeline-section">
+            <h4>Query Engine</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Designed and built a distributed SQL query engine using Apache DataFusion and Ballista, integrating Tantivy for full-text search, Bloom filter indexes for trace search, and Parquet columnar storage on S3 for highly parallel, low-latency queries at PB scale.
+  
+</li>
+
+              
+              
+<li>
+  
+  Architected custom materialized view integration in DataFusion&#39;s logical plan conversion, so the same SQL interface queries raw and precomputed data.
+  
+</li>
+
+              
+              
+<li>
+  
+  Built an extensible UDF framework so FDEs can add domain-specific logic, with anomaly detection and log pattern mining (Drain3) as example use cases.
+  
+</li>
+
+              
+            </ul>
+          </div>
           
-          <li>Query engine: architected custom materialized view integration in DataFusion&#39;s logical plan conversion, so the same SQL interface queries raw and precomputed data.</li>
+          <div class="timeline-section">
+            <h4>Ingestion</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Designed a horizontally scalable pipeline sustaining 35 TB/hour of compressed telemetry and 5–6 PB monthly, replacing a legacy MongoDB/EBS architecture with a self-healing elastic S3 storage layer that decouples compute from storage.
+  
+</li>
+
+              
+              
+<li>
+  
+  Reached 5× higher ingestion capacity while cutting infrastructure cost from $100K to $17K/month (~$1M annually) through compute/storage decoupling and usage-based S3, and extended it with compliance-grade BYOB and BYOK for regulated customers.
+  
+</li>
+
+              
+            </ul>
+          </div>
           
-          <li>Query engine: built an extensible UDF framework so FDEs can add domain-specific logic, with anomaly detection and log pattern mining (Drain3) as example use cases.</li>
+          <div class="timeline-section">
+            <h4>Consumer Ecosystem</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Architected MELTS&#39; downstream extensibility layer for commerce, incident management, LLM/Harness observability, and agent-improvement pipelines.
+  
+</li>
+
+              
+            </ul>
+          </div>
           
-          <li>Ingestion: designed a horizontally scalable pipeline sustaining 35 TB/hour of compressed telemetry and 5–6 PB monthly, replacing a legacy MongoDB/EBS architecture with a self-healing elastic S3 storage layer that decouples compute from storage.</li>
+        </div>
+        
+        
+        
+        <p class="timeline-stack"><span class="timeline-stack__label">Tech stack</span>
           
-          <li>Ingestion: reached 5× higher ingestion capacity while cutting infrastructure cost from $100K to $17K/month (~$1M annually) through compute/storage decoupling and usage-based S3, and extended it with compliance-grade BYOB and BYOK for regulated customers.</li>
+          <span class="point-stack">
+            <span>Rust</span><span>Golang</span><span>DataFusion</span><span>Ballista</span><span>Fluentd</span><span>Tantivy</span><span>Parquet</span><span>S3</span>
+          </span>
           
-          <li>Ingestion: architected MELTS&#39; downstream extensibility layer for commerce, incident management, LLM/Harness observability, and agent-improvement pipelines.</li>
-          
-          <li>Tech stack: Rust, Golang, DataFusion, Ballista, Fluentd, Tantivy, Parquet, S3.</li>
-          
-        </ul>
+        </p>
+        
       </div>
     </li>
     
@@ -156,13 +225,99 @@
           </div>
         </header>
         
-        <ul class="timeline-bullets">
+        
+        <div class="timeline-sections">
           
-          <li>Control plane for interactive learning environments (Jupyter, Node) on Kubernetes — Go, Crossplane, K8s SDK.</li>
+          <div class="timeline-section">
+            <h4>Learning environments</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Kubernetes and AWS control plane that spawns interactive student pods, including Jupyter notebooks and Node.js + Express, in the style of Replit and GitHub Codespaces.
+  
+  <span class="point-stack">
+    <span>Go</span><span>Kubernetes SDK</span><span>Crossplane</span>
+  </span>
+  
+  
+</li>
+
+              
+            </ul>
+          </div>
           
-          <li>Event-driven ML platform with Kafka and Dapr; foundation for 15+ models in production.</li>
+          <div class="timeline-section">
+            <h4>ML platform</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Event-driven Kubernetes platform for production ML, with Dapr and Kafka as brokers. Foundation for 15+ models in production.
+  
+  <span class="point-stack">
+    <span>Kafka</span><span>Dapr</span><span>Flask</span><span>Gunicorn</span><span>Kubernetes</span>
+  </span>
+  
+  
+</li>
+
+              
+            </ul>
+          </div>
           
-        </ul>
+          <div class="timeline-section">
+            <h4>Cluster platform</h4>
+            <ul class="timeline-bullets">
+              
+              
+<li>
+  
+  Moved the backend from AMIs to Docker on EKS with Flux GitOps. Grew from 3 to 20+ services, including self-managed Airbyte, Airflow, GitLab, and Karpenter.
+  
+  <span class="point-stack">
+    <span>Kubernetes</span><span>AWS</span><span>Flux</span><span>Helm</span>
+  </span>
+  
+  
+</li>
+
+              
+              
+<li>
+  
+  Karpenter bin packing and node provisioning saved about $160,000 a year and beat a 60% cost-reduction target across clusters.
+  
+  <span class="point-stack">
+    <span>Karpenter</span><span>Kubecost</span><span>Kubernetes</span><span>EC2</span><span>AWS Fargate</span>
+  </span>
+  
+  
+</li>
+
+              
+              
+<li>
+  
+  KEDA and a custom gRPC server scaled pods with demand, at 99.999% availability and 10× traffic capacity, scaling down when idle.
+  
+  <span class="point-stack">
+    <span>KEDA</span><span>gRPC</span><span>Go</span>
+  </span>
+  
+  
+</li>
+
+              
+            </ul>
+          </div>
+          
+        </div>
+        
+        
+        
       </div>
     </li>
     
@@ -180,11 +335,21 @@
           </div>
         </header>
         
-        <ul class="timeline-bullets">
+        
+        
+        <ul class="timeline-bullets timeline-bullets--root">
           
-          <li>Centralized configuration store on Amazon&#39;s internal tree-structured database with a Java/Spring library for geo-aware config resolution.</li>
+          
+<li>
+  
+  Centralized configuration store on Amazon&#39;s internal tree-structured database with a Java/Spring library for geo-aware config resolution.
+  
+</li>
+
           
         </ul>
+        
+        
       </div>
     </li>
     
@@ -202,11 +367,21 @@
           </div>
         </header>
         
-        <ul class="timeline-bullets">
+        
+        
+        <ul class="timeline-bullets timeline-bullets--root">
           
-          <li>EKS support for Prombench — Kubernetes benchmarking control plane orchestrating ~1,000 pods to stress-test Prometheus at scale.</li>
+          
+<li>
+  
+  EKS support for Prombench — Kubernetes benchmarking control plane orchestrating ~1,000 pods to stress-test Prometheus at scale.
+  
+</li>
+
           
         </ul>
+        
+        
       </div>
     </li>
     
@@ -224,11 +399,21 @@
           </div>
         </header>
         
-        <ul class="timeline-bullets">
+        
+        
+        <ul class="timeline-bullets timeline-bullets--root">
           
-          <li>Randomized I/O for authentic assessment; RabbitMQ workers processing 10K students/hour and 60K submissions during exams (PostgreSQL, Symfony).</li>
+          
+<li>
+  
+  Randomized I/O for authentic assessment; RabbitMQ workers processing 10K students/hour and 60K submissions during exams (PostgreSQL, Symfony).
+  
+</li>
+
           
         </ul>
+        
+        
       </div>
     </li>
     
