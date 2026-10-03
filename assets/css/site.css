@@ -111,12 +111,45 @@ body.site {
 }
 
 .topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--mono);
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text);
   text-decoration: none;
   letter-spacing: -0.02em;
+}
+
+.topbar__mark {
+  display: block;
+  width: 1.65rem;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.topbar__cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1.05em;
+  margin-left: 0.08em;
+  background: var(--accent);
+  vertical-align: -0.14em;
+  border-radius: 1px;
+  animation: topbar-cursor-blink 1.1s step-end infinite;
+}
+
+@keyframes topbar-cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .topbar__nav {
@@ -1348,6 +1381,11 @@ body.site {
   .stage__photo--playful.is-jump,
   .stage__photo--playful.is-celebrating {
     animation: none;
+  }
+
+  .topbar__cursor {
+    animation: none;
+    opacity: 0.85;
   }
 
   .btn:hover,
