@@ -20,7 +20,30 @@
 <script src="/assets/js/site.js" defer></script>
 
 </head>
-<body class="site">
+<body class="site is-loading">
+  <div class="site-loader" id="site-loader" aria-hidden="true">
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="site-loader__stage">
+    <svg class="site-loader__mark" viewBox="0 0 256 242" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="">
+      <defs>
+        <clipPath id="loader-clip-d">
+          <rect x="0" y="0" width="132" height="242" />
+        </clipPath>
+        <clipPath id="loader-clip-p">
+          <rect x="124" y="0" width="132" height="242" />
+        </clipPath>
+      </defs>
+      <g class="site-loader__part site-loader__part--d" clip-path="url(#loader-clip-d)">
+        <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+      </g>
+      <g class="site-loader__part site-loader__part--p" clip-path="url(#loader-clip-p)">
+        <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+      </g>
+      <line class="site-loader__spark" x1="128" y1="96" x2="128" y2="146" pathLength="1" />
+    </svg>
+  </div>
+</div>
+
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar" data-header>
   <div class="shell topbar__inner">

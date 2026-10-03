@@ -2,6 +2,8 @@
   const header = document.querySelector("[data-header]");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  initSiteLoader(reduced);
+
   const onScroll = () => {
     if (!header) return;
     header.classList.toggle("is-scrolled", window.scrollY > 16);
@@ -30,6 +32,35 @@
 
   document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
 })();
+
+function initSiteLoader(reducedMotion) {
+  const loader = document.getElementById("site-loader");
+  if (!loader) return;
+
+  const finish = () => {
+    document.body.classList.remove("is-loading");
+    loader.classList.add("is-done");
+    window.setTimeout(() => loader.remove(), reducedMotion ? 0 : 520);
+  };
+
+  if (reducedMotion) {
+    finish();
+    return;
+  }
+
+  const LOADER_ANIM_MS = 1200;
+  const MIN_MS = LOADER_ANIM_MS;
+  const started = performance.now();
+
+  const onReady = () => {
+    const elapsed = performance.now() - started;
+    const waitForAnim = Math.max(0, MIN_MS - elapsed);
+    window.setTimeout(finish, waitForAnim);
+  };
+
+  if (document.readyState === "complete") onReady();
+  else window.addEventListener("load", onReady, { once: true });
+}
 
 function initPlayfulAvatar(reducedMotion) {
   const avatar = document.querySelector("[data-playful-avatar]");

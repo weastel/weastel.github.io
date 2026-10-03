@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dp loader preview</title>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+    }
+    .site-loader {
+      position: relative;
+      inset: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+    .site-loader__part--d {
+      animation: loader-d-connect 1.05s cubic-bezier(0.34, 1.15, 0.48, 1) infinite alternate;
+    }
+    .site-loader__part--p {
+      animation: loader-p-connect 1.05s cubic-bezier(0.34, 1.15, 0.48, 1) infinite alternate;
+    }
+    .site-loader__spark {
+      animation: loader-spark 0.45s ease infinite;
+      animation-delay: 0.72s;
+    }
+    p { margin-top: 2rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="site-loader" aria-hidden="true">
+      <div class="ambient" aria-hidden="true"></div>
+      <div class="site-loader__stage">
+        <svg class="site-loader__mark" viewBox="0 0 256 242" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="loader-clip-d"><rect x="0" y="0" width="132" height="242" /></clipPath>
+            <clipPath id="loader-clip-p"><rect x="124" y="0" width="132" height="242" /></clipPath>
+          </defs>
+          <g class="site-loader__part site-loader__part--d" clip-path="url(#loader-clip-d)">
+            <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+          </g>
+          <g class="site-loader__part site-loader__part--p" clip-path="url(#loader-clip-p)">
+            <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+          </g>
+          <line class="site-loader__spark" x1="128" y1="96" x2="128" y2="146" pathLength="1" />
+        </svg>
+      </div>
+    </div>
+    <p>Looping preview — live site runs the same animation on every full page load.</p>
+  </div>
+</body>
+</html>
