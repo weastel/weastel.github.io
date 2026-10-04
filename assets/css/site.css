@@ -167,7 +167,7 @@ body.site.is-loading {
   width: 100%;
   height: auto;
   overflow: visible;
-  transform: rotate(-12deg);
+  transform: rotate(12deg);
 }
 
 .site-loader .loader-mark--light {
@@ -268,7 +268,7 @@ html[data-theme="light"] .site-loader .loader-mark--light {
 
 @keyframes loader-mark-exit {
   to {
-    transform: rotate(-12deg) scale(0.92);
+    transform: rotate(12deg) scale(0.92);
     opacity: 0;
   }
 }
