@@ -2,6 +2,7 @@
   const header = document.querySelector("[data-header]");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  initTheme();
   initSiteLoader(reduced);
 
   const onScroll = () => {
@@ -32,6 +33,41 @@
 
   document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
 })();
+
+const THEME_STORAGE_KEY = "weastel-theme";
+
+function initTheme() {
+  const root = document.documentElement;
+  const toggle = document.querySelector("[data-theme-toggle]");
+  if (!toggle) return;
+
+  const getTheme = () => (root.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+  const syncToggle = (theme) => {
+    const isLight = theme === "light";
+    toggle.setAttribute("aria-pressed", isLight ? "true" : "false");
+    toggle.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+  };
+
+  const applyTheme = (theme, persist) => {
+    if (theme === "light") root.setAttribute("data-theme", "light");
+    else root.setAttribute("data-theme", "dark");
+    syncToggle(theme);
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch {
+        /* ignore */
+      }
+    }
+  };
+
+  syncToggle(getTheme());
+
+  toggle.addEventListener("click", () => {
+    applyTheme(getTheme() === "light" ? "dark" : "light", true);
+  });
+}
 
 function initSiteLoader(reducedMotion) {
   const loader = document.getElementById("site-loader");
@@ -141,7 +177,10 @@ function burstConfetti(origin) {
   const scale = devicePixelRatio;
   ctx.scale(scale, scale);
 
-  const colors = ["#6ec8ff", "#9edcff", "#fbb042", "#ffffff", "#4ade80", "#c4b5fd"];
+  const isLight = document.documentElement.getAttribute("data-theme") === "light";
+  const colors = isLight
+    ? ["#d4622a", "#f4a261", "#7c3aed", "#c4b5fd", "#fffaf6", "#fb923c"]
+    : ["#6ec8ff", "#9edcff", "#fbb042", "#ffffff", "#4ade80", "#c4b5fd"];
   const particles = Array.from({ length: 90 }, () => {
     const angle = Math.random() * Math.PI * 2;
     const speed = 4 + Math.random() * 10;

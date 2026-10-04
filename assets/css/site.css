@@ -1,4 +1,4 @@
-/* —— Design system: ink studio + sky accent —— */
+/* —— Design system: ink studio (dark) + warm dusk (light) —— */
 :root {
   --bg: #06070a;
   --bg-2: #0c0e14;
@@ -12,12 +12,77 @@
   --accent-deep: #2d8fd4;
   --accent-soft: rgba(110, 200, 255, 0.14);
   --accent-glow: rgba(110, 200, 255, 0.45);
+  --on-accent: #041018;
+  --accent-hover: #9edcff;
+  --nav-hover-bg: rgba(255, 255, 255, 0.05);
+  --topbar-scrolled: rgba(6, 7, 10, 0.82);
+  --ambient-bg:
+    radial-gradient(ellipse 70% 55% at 85% -15%, rgba(110, 200, 255, 0.18), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 5% 40%, rgba(110, 200, 255, 0.06), transparent 50%),
+    radial-gradient(ellipse 80% 50% at 50% 110%, rgba(45, 143, 212, 0.08), transparent 55%);
+  --photo-frame: linear-gradient(145deg, rgba(110, 200, 255, 0.65), rgba(110, 200, 255, 0.05) 45%, rgba(255, 255, 255, 0.08));
+  --photo-shadow: 0 40px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  --btn-ghost-bg: rgba(255, 255, 255, 0.02);
+  --btn-ghost-border-hover: rgba(110, 200, 255, 0.35);
+  --glass-tint: rgba(6, 7, 10, 0.35);
+  --shadow-float: 0 24px 48px rgba(0, 0, 0, 0.25);
+  --tile-highlight: linear-gradient(180deg, rgba(110, 200, 255, 0.06), transparent 40%), var(--surface);
+  --accent-border-soft: rgba(110, 200, 255, 0.25);
+  --accent-border-muted: rgba(110, 200, 255, 0.2);
+  --icon-border-hover: rgba(110, 200, 255, 0.4);
+  --stack-shelf-bg: transparent;
+  --stack-shelf-border: transparent;
+  --stack-shelf-shadow: none;
+  --stack-shelf-title: var(--text-dim);
   --display: "Sora", system-ui, sans-serif;
   --body: "IBM Plex Sans", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --shell: min(1140px, calc(100% - 2.5rem));
   --radius: 14px;
   --space-section: clamp(4rem, 9vw, 6.5rem);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #faf5ef;
+  --bg-2: #f3ebe2;
+  --surface: #fffaf6;
+  --line: rgba(58, 40, 72, 0.1);
+  --line-strong: rgba(58, 40, 72, 0.16);
+  --text: #2a1835;
+  --text-muted: #5f4f6e;
+  --text-dim: #857892;
+  --accent: #d4622a;
+  --accent-deep: #7c3aed;
+  --accent-soft: rgba(212, 98, 42, 0.12);
+  --accent-glow: rgba(124, 58, 237, 0.28);
+  --on-accent: #fffaf6;
+  --accent-hover: #e07f45;
+  --nav-hover-bg: rgba(124, 58, 237, 0.07);
+  --topbar-scrolled: rgba(250, 245, 239, 0.9);
+  --ambient-bg:
+    radial-gradient(ellipse 75% 60% at 92% -10%, rgba(255, 168, 88, 0.42), transparent 58%),
+    radial-gradient(ellipse 55% 45% at 0% 35%, rgba(167, 139, 250, 0.22), transparent 52%),
+    radial-gradient(ellipse 70% 55% at 48% 105%, rgba(212, 98, 42, 0.14), transparent 55%);
+  --photo-frame: linear-gradient(145deg, rgba(255, 176, 112, 0.85), rgba(167, 139, 250, 0.35) 48%, rgba(255, 250, 245, 0.9));
+  --photo-shadow: 0 32px 64px rgba(88, 52, 32, 0.18), 0 0 0 1px rgba(124, 58, 237, 0.12) inset;
+  --btn-ghost-bg: rgba(124, 58, 237, 0.04);
+  --btn-ghost-border-hover: rgba(212, 98, 42, 0.35);
+  --glass-tint: rgba(255, 250, 245, 0.72);
+  --shadow-float: 0 24px 48px rgba(88, 52, 32, 0.12);
+  --tile-highlight: linear-gradient(180deg, rgba(255, 176, 112, 0.14), transparent 42%), var(--surface);
+  --accent-border-soft: rgba(212, 98, 42, 0.22);
+  --accent-border-muted: rgba(124, 58, 237, 0.16);
+  --icon-border-hover: rgba(212, 98, 42, 0.38);
+  --stack-shelf-bg:
+    radial-gradient(ellipse 90% 80% at 100% 0%, rgba(255, 168, 88, 0.24), transparent 52%),
+    radial-gradient(ellipse 70% 70% at 0% 100%, rgba(167, 139, 250, 0.3), transparent 55%),
+    linear-gradient(158deg, #2f1d3b 0%, #1c1124 50%, #261430 100%);
+  --stack-shelf-border: rgba(255, 255, 255, 0.08);
+  --stack-shelf-shadow:
+    0 22px 46px rgba(42, 24, 53, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --stack-shelf-title: rgba(255, 244, 235, 0.74);
 }
 
 *,
@@ -30,6 +95,13 @@ html {
   color-scheme: dark;
   scroll-behavior: smooth;
   background: var(--bg);
+}
+
+html[data-theme="light"] .stage__identity-line {
+  background: linear-gradient(118deg, var(--accent) 0%, #c2410c 38%, var(--accent-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -47,6 +119,9 @@ body.site {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
 }
 
 body.site.is-loading {
@@ -193,7 +268,7 @@ body.site.is-loading {
   top: 0;
   padding: 0.5rem 1rem;
   background: var(--accent);
-  color: #041018;
+  color: var(--on-accent);
   z-index: 200;
 }
 
@@ -207,10 +282,8 @@ body.site.is-loading {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(ellipse 70% 55% at 85% -15%, rgba(110, 200, 255, 0.18), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 5% 40%, rgba(110, 200, 255, 0.06), transparent 50%),
-    radial-gradient(ellipse 80% 50% at 50% 110%, rgba(45, 143, 212, 0.08), transparent 55%);
+  background: var(--ambient-bg);
+  transition: background 0.45s ease;
 }
 
 .ambient::after {
@@ -231,7 +304,7 @@ body.site.is-loading {
 }
 
 .topbar.is-scrolled {
-  background: rgba(6, 7, 10, 0.82);
+  background: var(--topbar-scrolled);
   border-bottom-color: var(--line);
   backdrop-filter: blur(18px) saturate(1.15);
 }
@@ -256,11 +329,32 @@ body.site.is-loading {
   letter-spacing: -0.02em;
 }
 
+.topbar__mark-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  transform: rotate(-12deg);
+  transform-origin: center center;
+}
+
 .topbar__mark {
   display: block;
   width: 1.65rem;
   height: auto;
-  flex-shrink: 0;
+}
+
+.topbar__mark--light,
+.loader-mark--light {
+  display: none;
+}
+
+html[data-theme="light"] .topbar__mark--dark,
+html[data-theme="light"] .loader-mark--dark {
+  display: none;
+}
+
+html[data-theme="light"] .topbar__mark--light,
+html[data-theme="light"] .loader-mark--light {
+  display: block;
 }
 
 .topbar__cursor {
@@ -306,18 +400,62 @@ body.site.is-loading {
 
 .topbar__link:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--nav-hover-bg);
+}
+
+.topbar__theme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: 0.15rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--btn-ghost-bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.topbar__theme:hover {
+  color: var(--text);
+  border-color: var(--accent-border-soft);
+  background: var(--accent-soft);
+}
+
+.topbar__theme:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.topbar__theme svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.theme-icon--moon {
+  display: none;
+}
+
+html[data-theme="light"] .theme-icon--sun {
+  display: none;
+}
+
+html[data-theme="light"] .theme-icon--moon {
+  display: block;
 }
 
 .topbar__link--cta {
-  color: #041018;
+  color: var(--on-accent);
   background: var(--accent);
   margin-left: 0.35rem;
 }
 
 .topbar__link--cta:hover {
-  background: #9edcff;
-  color: #041018;
+  background: var(--accent-hover);
+  color: var(--on-accent);
 }
 
 .main {
@@ -412,7 +550,7 @@ body.site.is-loading {
   height: 2.5rem;
   border-radius: 999px;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--btn-ghost-bg);
   border: 1px solid var(--line);
   text-decoration: none;
   transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
@@ -420,7 +558,7 @@ body.site.is-loading {
 
 .icon-btn:hover {
   color: var(--accent);
-  border-color: rgba(110, 200, 255, 0.4);
+  border-color: var(--icon-border-hover);
   background: var(--accent-soft);
   transform: translateY(-1px);
 }
@@ -442,6 +580,14 @@ body.site.is-loading {
   width: 100%;
 }
 
+html[data-theme="light"] .stage .stack {
+  padding: 1.15rem 1.25rem 1.25rem;
+  border-radius: calc(var(--radius) + 2px);
+  border: 1px solid var(--stack-shelf-border);
+  background: var(--stack-shelf-bg);
+  box-shadow: var(--stack-shelf-shadow);
+}
+
 .stack__title {
   margin: 0 0 1rem;
   font-family: var(--mono);
@@ -449,6 +595,10 @@ body.site.is-loading {
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--text-dim);
+}
+
+html[data-theme="light"] .stage .stack .stack__title {
+  color: var(--stack-shelf-title);
 }
 
 .stack__grid {
@@ -498,6 +648,14 @@ body.site.is-loading {
   filter: brightness(0) invert(1);
 }
 
+html[data-theme="light"] .stage .stack .stack__link {
+  opacity: 0.9;
+}
+
+html[data-theme="light"] .stage .stack .stack__link:hover {
+  opacity: 1;
+}
+
 .stack__logo--lg {
   height: 2.35rem;
 }
@@ -542,11 +700,9 @@ body.site.is-loading {
   padding: 4px;
   border: 0;
   border-radius: 28px;
-  background: linear-gradient(145deg, rgba(110, 200, 255, 0.65), rgba(110, 200, 255, 0.05) 45%, rgba(255, 255, 255, 0.08));
+  background: var(--photo-frame);
   transform: rotate(2deg);
-  box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  box-shadow: var(--photo-shadow);
   font: inherit;
   cursor: pointer;
   touch-action: manipulation;
@@ -648,24 +804,24 @@ body.site.is-loading {
 .btn--fill,
 .btn-primary {
   background: var(--accent);
-  color: #041018;
+  color: var(--on-accent);
 }
 
 .btn--fill:hover,
 .btn-primary:hover {
-  background: #9edcff;
+  background: var(--accent-hover);
 }
 
 .btn--line,
 .btn-secondary {
   color: var(--text);
   border-color: var(--line-strong);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--btn-ghost-bg);
 }
 
 .btn--line:hover,
 .btn-secondary:hover {
-  border-color: rgba(110, 200, 255, 0.35);
+  border-color: var(--btn-ghost-border-hover);
   background: var(--accent-soft);
 }
 
@@ -827,7 +983,7 @@ body.site.is-loading {
 }
 
 .tile:hover {
-  border-color: rgba(110, 200, 255, 0.25);
+  border-color: var(--accent-border-soft);
   transform: translateY(-2px);
 }
 
@@ -837,7 +993,7 @@ body.site.is-loading {
   background:
     linear-gradient(160deg, var(--accent-soft), transparent 55%),
     var(--surface);
-  border-color: rgba(110, 200, 255, 0.2);
+  border-color: var(--accent-border-muted);
 }
 
 .tile h3 {
@@ -896,7 +1052,7 @@ body.site.is-loading {
 }
 
 .panel--soft {
-  background: linear-gradient(180deg, rgba(110, 200, 255, 0.06), transparent 40%), var(--surface);
+  background: var(--tile-highlight);
 }
 
 .likes-block {
@@ -1117,7 +1273,7 @@ body.site.is-loading {
   font-family: var(--mono);
   font-size: 0.82rem;
   color: var(--text-muted);
-  background: rgba(6, 7, 10, 0.35);
+  background: var(--glass-tint);
   max-width: 42rem;
 }
 

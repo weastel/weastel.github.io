@@ -3,6 +3,17 @@
 <head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function () {
+    var key = "weastel-theme";
+    try {
+      var stored = localStorage.getItem(key);
+      if (stored === "light" || stored === "dark") {
+        document.documentElement.setAttribute("data-theme", stored);
+      }
+    } catch (e) {}
+  })();
+</script>
 <title>Scaling stories — journey from EC2 to Kubernetes · weastel</title>
 <meta name="description" content="A startup scaling parable — vertical EC2, load balancers, Docker, Jenkins, microservices, and Kubernetes on AWS.">
 <link rel="canonical" href="https://weastel.github.io/blog/scaling-ec2-to-kubernetes/">
@@ -34,10 +45,12 @@
         </clipPath>
       </defs>
       <g class="site-loader__part site-loader__part--d" clip-path="url(#loader-clip-d)">
-        <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm.png" width="256" height="242" />
       </g>
       <g class="site-loader__part site-loader__part--p" clip-path="url(#loader-clip-p)">
-        <image href="/brand/weastel-dp-blue.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm.png" width="256" height="242" />
       </g>
       <line class="site-loader__spark" x1="128" y1="96" x2="128" y2="146" pathLength="1" />
     </svg>
@@ -48,15 +61,31 @@
   <header class="topbar" data-header>
   <div class="shell topbar__inner">
     <a class="topbar__brand" href="/">
-      <img class="topbar__mark"
-     src="/brand/weastel-dp-blue.png"
-     width="30"
-     height="28"
-     alt="">
+      <span class="topbar__mark-wrap" aria-hidden="true">
+  <img class="topbar__mark topbar__mark--dark"
+       src="/brand/weastel-dp-blue.png"
+       width="30"
+       height="28"
+       alt="">
+  <img class="topbar__mark topbar__mark--light"
+       src="/brand/weastel-dp-warm.png"
+       width="30"
+       height="28"
+       alt="">
+</span>
 
       <span>weastel</span><span class="topbar__cursor" aria-hidden="true"></span>
     </a>
     <nav class="topbar__nav" aria-label="Primary">
+      <button type="button" class="topbar__theme" data-theme-toggle aria-pressed="false" aria-label="Switch to light mode">
+        <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.25"/>
+          <path d="M12 2.75v2.1M12 19.15v2.1M4.86 4.86l1.48 1.48M17.66 17.66l1.48 1.48M2.75 12h2.1M19.15 12h2.1M4.86 19.14l1.48-1.48M17.66 6.34l1.48-1.48"/>
+        </svg>
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 7 7 0 1 0 20.5 14.2Z"/>
+        </svg>
+      </button>
       
         <a class="topbar__link"
            href="/"
