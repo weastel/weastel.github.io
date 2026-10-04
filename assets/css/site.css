@@ -167,6 +167,23 @@ body.site.is-loading {
   width: 100%;
   height: auto;
   overflow: visible;
+  transform: rotate(-12deg);
+}
+
+.site-loader .loader-mark--light {
+  opacity: 0;
+}
+
+.site-loader .loader-mark--dark {
+  opacity: 1;
+}
+
+html[data-theme="light"] .site-loader .loader-mark--dark {
+  opacity: 0;
+}
+
+html[data-theme="light"] .site-loader .loader-mark--light {
+  opacity: 1;
 }
 
 .site-loader__part {
@@ -251,7 +268,7 @@ body.site.is-loading {
 
 @keyframes loader-mark-exit {
   to {
-    transform: scale(0.92);
+    transform: rotate(-12deg) scale(0.92);
     opacity: 0;
   }
 }
@@ -342,18 +359,15 @@ body.site.is-loading {
   backface-visibility: hidden;
 }
 
-.topbar__mark--light,
-.loader-mark--light {
+.topbar__mark--light {
   display: none;
 }
 
-html[data-theme="light"] .topbar__mark--dark,
-html[data-theme="light"] .loader-mark--dark {
+html[data-theme="light"] .topbar__mark--dark {
   display: none;
 }
 
-html[data-theme="light"] .topbar__mark--light,
-html[data-theme="light"] .loader-mark--light {
+html[data-theme="light"] .topbar__mark--light {
   display: block;
 }
 
