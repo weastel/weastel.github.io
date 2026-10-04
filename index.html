@@ -68,12 +68,12 @@
         </clipPath>
       </defs>
       <g class="site-loader__part site-loader__part--d" clip-path="url(#loader-clip-d)">
-        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue.png" width="256" height="242" />
-        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue-tilt.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm-tilt.png" width="256" height="242" />
       </g>
       <g class="site-loader__part site-loader__part--p" clip-path="url(#loader-clip-p)">
-        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue.png" width="256" height="242" />
-        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--dark" href="/brand/weastel-dp-blue-tilt.png" width="256" height="242" />
+        <image class="loader-mark loader-mark--light" href="/brand/weastel-dp-warm-tilt.png" width="256" height="242" />
       </g>
       <line class="site-loader__spark" x1="128" y1="96" x2="128" y2="146" pathLength="1" />
     </svg>
@@ -86,14 +86,14 @@
     <a class="topbar__brand" href="/">
       <span class="topbar__mark-wrap" aria-hidden="true">
   <img class="topbar__mark topbar__mark--dark"
-       src="/brand/weastel-dp-blue.png"
-       width="30"
-       height="28"
+       src="/brand/weastel-dp-blue-tilt.png"
+       width="64"
+       height="61"
        alt="">
   <img class="topbar__mark topbar__mark--light"
-       src="/brand/weastel-dp-warm.png"
-       width="30"
-       height="28"
+       src="/brand/weastel-dp-warm-tilt.png"
+       width="64"
+       height="61"
        alt="">
 </span>
 
@@ -216,13 +216,17 @@
          href="https://datafusion.apache.org/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Apache DataFusion">
+         aria-describedby="stack-tip-1"
+         aria-label="Apache DataFusion. The brain for my compute engines.">
         <img class="stack__logo"
              src="/assets/logos/datafusion.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-1" role="tooltip">The brain for my compute engines.</span>
+        
       </a>
     </li>
     
@@ -231,13 +235,17 @@
          href="https://fluss.apache.org/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Apache Fluss">
+         aria-describedby="stack-tip-2"
+         aria-label="Apache Fluss. Streams that finally behave like tables.">
         <img class="stack__logo"
              src="/assets/logos/fluss.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-2" role="tooltip">Streams that finally behave like tables.</span>
+        
       </a>
     </li>
     
@@ -246,13 +254,17 @@
          href="https://arrow.apache.org/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Apache Arrow">
+         aria-describedby="stack-tip-3"
+         aria-label="Apache Arrow. Columnar memory. Zero-copy bragging rights.">
         <img class="stack__logo stack__logo--lg"
              src="/assets/logos/arrow.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-3" role="tooltip">Columnar memory. Zero-copy bragging rights.</span>
+        
       </a>
     </li>
     
@@ -261,13 +273,17 @@
          href="https://parquet.apache.org/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Apache Parquet">
+         aria-describedby="stack-tip-4"
+         aria-label="Apache Parquet. Cheap reads at PB scale. Bloom filters included.">
         <img class="stack__logo stack__logo--lg"
              src="/assets/logos/parquet.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-4" role="tooltip">Cheap reads at PB scale. Bloom filters included.</span>
+        
       </a>
     </li>
     
@@ -276,13 +292,17 @@
          href="https://github.com/quickwit-oss/tantivy"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Tantivy">
+         aria-describedby="stack-tip-5"
+         aria-label="Tantivy. Full-text search that keeps up with the warehouse.">
         <img class="stack__logo stack__logo--tantivy"
              src="/assets/logos/tantivy.png"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-5" role="tooltip">Full-text search that keeps up with the warehouse.</span>
+        
       </a>
     </li>
     
@@ -291,13 +311,17 @@
          href="https://www.rust-lang.org/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Rust">
+         aria-describedby="stack-tip-6"
+         aria-label="Rust. Compile-time nagging. Fewer 3 a.m. pages.">
         <img class="stack__logo stack__logo--mark"
              src="/assets/logos/rust.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-6" role="tooltip">Compile-time nagging. Fewer 3 a.m. pages.</span>
+        
       </a>
     </li>
     
@@ -306,13 +330,17 @@
          href="https://go.dev/"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="Go">
+         aria-describedby="stack-tip-7"
+         aria-label="Go. Boring control planes. Fast on purpose.">
         <img class="stack__logo stack__logo--mark"
              src="/assets/logos/go.svg"
              alt=""
              width="120"
              height="32"
              loading="lazy">
+        
+        <span class="stack__tip" id="stack-tip-7" role="tooltip">Boring control planes. Fast on purpose.</span>
+        
       </a>
     </li>
     
