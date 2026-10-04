@@ -25,8 +25,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link id="site-favicon-ico"
+      rel="icon"
+      href="/favicon.ico"
+      sizes="any"
+      data-icon-dark="/favicon.ico"
+      data-icon-light="/favicon-warm.ico">
+<link id="site-favicon-svg"
+      rel="icon"
+      href="/favicon.svg"
+      type="image/svg+xml"
+      data-icon-dark="/favicon.svg"
+      data-icon-light="/favicon-warm.svg">
+<script>
+  (function () {
+    var root = document.documentElement;
+    var isLight = root.getAttribute("data-theme") === "light";
+    var ico = document.getElementById("site-favicon-ico");
+    var svg = document.getElementById("site-favicon-svg");
+    if (!ico && !svg) return;
+    if (isLight) {
+      if (ico && ico.dataset.iconLight) ico.href = ico.dataset.iconLight;
+      if (svg && svg.dataset.iconLight) svg.href = svg.dataset.iconLight;
+    }
+  })();
+</script>
 <link rel="stylesheet" href="/assets/css/site.css">
 <script src="/assets/js/site.js" defer></script>
 

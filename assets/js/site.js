@@ -3,6 +3,7 @@
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   initTheme();
+  syncFavicon(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
   initSiteLoader(reduced);
 
   const onScroll = () => {
@@ -36,10 +37,23 @@
 
 const THEME_STORAGE_KEY = "weastel-theme";
 
+function syncFavicon(theme) {
+  const isLight = theme === "light";
+  const ico = document.getElementById("site-favicon-ico");
+  const svg = document.getElementById("site-favicon-svg");
+  if (ico) {
+    const href = isLight ? ico.dataset.iconLight : ico.dataset.iconDark;
+    if (href) ico.href = href;
+  }
+  if (svg) {
+    const href = isLight ? svg.dataset.iconLight : svg.dataset.iconDark;
+    if (href) svg.href = href;
+  }
+}
+
 function initTheme() {
   const root = document.documentElement;
   const toggle = document.querySelector("[data-theme-toggle]");
-  if (!toggle) return;
 
   const getTheme = () => (root.getAttribute("data-theme") === "light" ? "light" : "dark");
 
@@ -53,6 +67,7 @@ function initTheme() {
     if (theme === "light") root.setAttribute("data-theme", "light");
     else root.setAttribute("data-theme", "dark");
     syncToggle(theme);
+    syncFavicon(theme);
     if (persist) {
       try {
         localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -62,11 +77,12 @@ function initTheme() {
     }
   };
 
-  syncToggle(getTheme());
-
-  toggle.addEventListener("click", () => {
-    applyTheme(getTheme() === "light" ? "dark" : "light", true);
-  });
+  if (toggle) {
+    syncToggle(getTheme());
+    toggle.addEventListener("click", () => {
+      applyTheme(getTheme() === "light" ? "dark" : "light", true);
+    });
+  }
 }
 
 function initSiteLoader(reducedMotion) {
